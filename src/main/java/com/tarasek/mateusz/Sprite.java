@@ -13,6 +13,9 @@ public class Sprite {
 
     Sprite(){
         visible = true;
+        image = null;
+        x = 0;
+        y = 0;
         exploding = false;
     }
 
