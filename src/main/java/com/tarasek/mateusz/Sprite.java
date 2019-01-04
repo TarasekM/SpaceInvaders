@@ -11,7 +11,7 @@ public class Sprite {
     protected boolean exploding;
     protected int dx;
 
-    Sprite(){
+    public Sprite(){
         visible = true;
         image = null;
         x = 0;
