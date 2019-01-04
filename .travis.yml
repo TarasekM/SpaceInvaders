@@ -1,9 +1,7 @@
 language:
   java
 
-jdk:
-  - oraclejdk8
-  - openjdk10
+jdk: openjdk10
 
 before_install:
   - wget https://github.com/sormuras/bach/raw/master/install-jdk.sh
