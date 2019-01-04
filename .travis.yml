@@ -3,3 +3,6 @@ language:
 
 jdk:
   - oraclejdk8
+
+script:
+  - mvn clean test -Dtest=com.tarasek.mateusz.SpriteTest
