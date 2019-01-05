@@ -5,5 +5,4 @@ jdk:
   - oraclejdk8
 
 script:
-  - mvn -Dtest=\!PlayerTest install
   - mvn clean test
