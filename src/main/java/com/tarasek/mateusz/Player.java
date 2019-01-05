@@ -10,7 +10,7 @@ public class Player extends Sprite implements SharedVariables{
     private final int width = 64;
     private final int heigth = 64;
 
-    private final String playerSprite = "src/img/player.png";
+    private final String playerSprite = "";
 
     public Player(){
         initPLayer();
@@ -25,7 +25,6 @@ public class Player extends Sprite implements SharedVariables{
 
     public void move(){
         int x, y;
-
         Point mousePosition = MouseInfo.getPointerInfo().getLocation();
         x = mousePosition.x;
         y = mousePosition.y;
@@ -43,10 +42,18 @@ public class Player extends Sprite implements SharedVariables{
         }
 
         if(y <= heigth){
-            x = heigth;
+            y = heigth;
         }
 
         this.x = x;
         this.y = y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeigth() {
+        return heigth;
     }
 }
