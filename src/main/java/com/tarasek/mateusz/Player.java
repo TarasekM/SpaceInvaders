@@ -15,6 +15,8 @@ public class Player extends Sprite implements SharedVariables{
     }
 
     private void initPLayer(){
-        ImageIcon ii = new ImageIcon(playerSprite);
+        ImageIcon imageIcon = new ImageIcon(playerSprite);
+        setImage(imageIcon);
+
     }
 }

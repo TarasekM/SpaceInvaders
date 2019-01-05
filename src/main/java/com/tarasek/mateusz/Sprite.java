@@ -1,11 +1,12 @@
 package com.tarasek.mateusz;
 
+import javax.swing.*;
 import java.awt.Image;
 
 public class Sprite {
 
     private boolean visible;
-    private Image image;
+    private ImageIcon image;
     protected int x;
     protected int y;
     protected boolean exploding;
@@ -31,7 +32,7 @@ public class Sprite {
         this.visible = visible;
     }
 
-    public void setImage(Image image) {
+    public void setImage(ImageIcon image) {
         this.image = image;
     }
 
