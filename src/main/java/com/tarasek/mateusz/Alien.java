@@ -1,0 +1,33 @@
+package com.tarasek.mateusz;
+
+import javax.swing.*;
+
+public class Alien extends Sprite{
+
+    private final String alienSprite = "";
+    private Bomb bomb;
+
+    public Alien(int x, int y){
+        initAlien(x, y);
+    }
+
+    private void initAlien(int x, int y){
+        bomb = new Bomb(x, y);
+        ImageIcon imageIcon = new ImageIcon(alienSprite);
+        setImage(imageIcon);
+
+        this.x = x;
+        this.y = y;
+    }
+
+    private void move(int x, int y){
+        this.x += x;
+        this.y += y;
+    }
+
+    public Bomb getBomb() {
+
+        return bomb;
+    }
+
+}
