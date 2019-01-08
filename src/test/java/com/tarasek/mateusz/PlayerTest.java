@@ -25,8 +25,7 @@ class PlayerTest{
 
     @Test
     void moveInsideBoard(){
-        robot.mouseMove(100,100);
-        player.move();
+        player.move(100,100);
         assertEquals(100, player.getX());
         assertEquals(100, player.getY());
     }
@@ -34,15 +33,13 @@ class PlayerTest{
     @Test
     void moveOutsideBoard(){
 
-        robot.mouseMove(0,0);
-        player.move();
+        player.move(0,0);
         assertEquals(player.getWidth(), player.getX());
-        assertEquals(player.getHeigth(),player.getY());
+        assertEquals(player.getHeight(),player.getY());
 
-        robot.mouseMove(player.BOARD_WIDTH,player.BOARD_HEIGTH);
-        player.move();
+        player.move(player.BOARD_WIDTH,player.BOARD_HEIGHT);
         assertEquals(player.BOARD_WIDTH - player.getWidth(), player.getX());
-        assertEquals(player.BOARD_HEIGTH - player.getHeigth(), player.getY());
+        assertEquals(player.BOARD_HEIGHT - player.getHeight(), player.getY());
     }
 
 
