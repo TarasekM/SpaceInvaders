@@ -26,21 +26,19 @@ class PlayerTest{
     @Test
     void moveInsideBoard(){
         player.move(100,100);
-        assertEquals(100, player.getX());
-        assertEquals(100, player.getY());
+        assertEquals(100 - player.getWidth()/2, player.getX());
+        assertEquals(100 - player.getHeight()/2, player.getY());
     }
 
     @Test
     void moveOutsideBoard(){
 
-        player.move(0,0);
-        assertEquals(player.getWidth(), player.getX());
-        assertEquals(player.getHeight(),player.getY());
+        player.move(20,20);
+        assertEquals(0, player.getX());
+        assertEquals(0,player.getY());
 
         player.move(player.BOARD_WIDTH,player.BOARD_HEIGHT);
         assertEquals(player.BOARD_WIDTH - player.getWidth(), player.getX());
         assertEquals(player.BOARD_HEIGHT - player.getHeight(), player.getY());
     }
-
-
 }
