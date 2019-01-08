@@ -13,7 +13,7 @@ public class Shot extends Sprite{
 
     private void initShot(int x, int y){
         ImageIcon imageIcon = new ImageIcon(shotSprite);
-        setImage(imageIcon);
+        setImage(imageIcon.getImage());
         setX(x);
         setY(y + heightSpace);
     }

@@ -14,7 +14,7 @@ public class Alien extends Sprite{
     private void initAlien(int x, int y){
         bomb = new Bomb(x, y);
         ImageIcon imageIcon = new ImageIcon(alienSprite);
-        setImage(imageIcon);
+        setImage(imageIcon.getImage());
 
         this.x = x;
         this.y = y;
