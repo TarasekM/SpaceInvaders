@@ -6,7 +6,7 @@ import java.awt.Image;
 public class Sprite {
 
     private boolean visible;
-    private ImageIcon image;
+    private Image image;
     protected int x;
     protected int y;
     protected boolean exploding;
@@ -32,8 +32,12 @@ public class Sprite {
         this.visible = visible;
     }
 
-    public void setImage(ImageIcon image) {
+    public void setImage(Image image) {
         this.image = image;
+    }
+
+    public Image getImage() {
+        return image;
     }
 
     public void setX(int x) {
