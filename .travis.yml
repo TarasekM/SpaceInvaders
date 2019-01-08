@@ -5,5 +5,5 @@ jdk:
   - oraclejdk8
 
 script:
-  - mvn clean test
   - mvn clean package
+  - java -cp target/SpaceInvaders-1.0-SNAPSHOT.jar com.tarasek.mateusz.SpaceInvaders
