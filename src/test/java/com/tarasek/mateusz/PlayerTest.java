@@ -2,24 +2,15 @@ package com.tarasek.mateusz;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.awt.Robot;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class PlayerTest{
 
-    Robot robot;
     Player player;
 
     @BeforeEach
     void setUp(){
-        try {
-            robot = new Robot();
-        }catch (java.awt.AWTException e){
-            System.out.println(e);
-
-        }
         player = new Player();
     }
 
