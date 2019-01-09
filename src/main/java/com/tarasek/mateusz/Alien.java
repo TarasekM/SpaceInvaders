@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class Alien extends Sprite{
 
-    private final String alienSprite = "";
+    private final String alienSprite = "src/Sprites/DODO_ALIEN.png";
     private Bomb bomb;
 
     public Alien(int x, int y){
