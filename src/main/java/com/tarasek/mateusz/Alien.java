@@ -20,7 +20,7 @@ public class Alien extends Sprite{
         this.y = y;
     }
 
-    private void move(int x, int y){
+    public void move(int x, int y){
         this.x += x;
         this.y += y;
     }
