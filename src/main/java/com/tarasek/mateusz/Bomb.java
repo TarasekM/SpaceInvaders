@@ -2,7 +2,7 @@ package com.tarasek.mateusz;
 
 import javax.swing.*;
 
-public class Bomb extends Sprite {
+public class Bomb extends Sprite implements SharedVariables{
 
     private final String bombSprite = "";
     private boolean destroyed;
@@ -14,17 +14,22 @@ public class Bomb extends Sprite {
     private void initBomb(int x, int y){
         setDestroyed(false);
         ImageIcon imageIcon = new ImageIcon(bombSprite);
-        this.x = x;
-        this.y = y;
+        setX(x);
+        setY(y);
         setImage(imageIcon.getImage());
 
     }
 
-    private void setDestroyed(boolean destroyed){
+    void moveDownwards(){
+        setY(getY() + BOMB_SPEED);
+    }
+
+    void setDestroyed(boolean destroyed){
         this.destroyed = destroyed;
     }
 
     public boolean isDestroyed(){
         return destroyed;
     }
+
 }
