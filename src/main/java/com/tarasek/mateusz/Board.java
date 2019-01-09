@@ -140,8 +140,6 @@ public class Board extends JPanel implements Runnable, SharedVariables {
                 sleep += 2000;
             }
 
-
-
             repaint();
         }
 
