@@ -21,7 +21,7 @@ public class Bomb extends Sprite implements SharedVariables{
     }
 
     void moveDownwards(){
-        setY(getY() + BOMB_SPEED);
+        setY((int)getY() + BOMB_SPEED);
     }
 
     void setDestroyed(boolean destroyed){

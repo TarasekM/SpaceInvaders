@@ -45,11 +45,11 @@ public class Player extends Sprite implements SharedVariables{
         this.y = y - width/2;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 }
