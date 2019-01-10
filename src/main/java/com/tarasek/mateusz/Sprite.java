@@ -1,22 +1,19 @@
 package com.tarasek.mateusz;
 
-import javax.swing.*;
 import java.awt.Image;
+import java.awt.geom.Rectangle2D;
 
-public class Sprite {
+public class Sprite extends Rectangle2D.Float {
 
     private boolean visible;
     private Image image;
-    protected int x;
-    protected int y;
     protected boolean exploding;
-    protected int dx;
 
     public Sprite(){
         visible = true;
         image = null;
-        x = 0;
-        y = 0;
+        this.x = 0;
+        this.y = 0;
         exploding = false;
     }
 
@@ -52,15 +49,8 @@ public class Sprite {
         this.exploding = exploding;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     public boolean isExploding() {
         return exploding;
     }
+
 }
