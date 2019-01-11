@@ -1,14 +1,13 @@
 package com.tarasek.mateusz;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Player extends Sprite implements SharedVariables{
 
     private final int START_X = 216;
     private final int START_Y = 544;
-    private final int width = 48;
-    private final int height = 48;
+    private final int PLAYER_WIDTH = 48;
+    private final int PLAYER_HEIGHT = 48;
 
     private final String playerSprite = "src/Sprites/DODO_SpaceShip.png";
 
@@ -21,9 +20,12 @@ public class Player extends Sprite implements SharedVariables{
         setImage(imageIcon.getImage());
         setX(START_X);
         setY(START_Y);
+        width = PLAYER_WIDTH;
+        height = PLAYER_HEIGHT;
+
     }
 
-    public void move(int x, int y){
+    public void move(float x, float y){
 
         if (x >= BOARD_WIDTH - width/2){
             x = BOARD_WIDTH - width/2;

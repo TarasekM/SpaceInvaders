@@ -16,11 +16,6 @@ public class SpaceInvaders extends JFrame implements SharedVariables{
         setSize(BOARD_WIDTH + 16, BOARD_HEIGHT + 39);
         setLocationRelativeTo(null);
         setResizable(false);
-        BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-        Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-                cursorImg, new Point(0, 0), "blank cursor");
-        getContentPane().setCursor(blankCursor);
-
         add(new Board());
     }
 
