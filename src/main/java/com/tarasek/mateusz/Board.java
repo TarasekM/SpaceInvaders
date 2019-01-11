@@ -2,10 +2,13 @@ package com.tarasek.mateusz;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 public class Board extends JPanel implements Runnable, SharedVariables {
 
@@ -19,8 +22,8 @@ public class Board extends JPanel implements Runnable, SharedVariables {
     private final int TICKS_PER_SECOND = 50;
     private final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
 
-    private boolean inGame = true;
-    private String message = "Game Over";
+    private boolean inGame = false;
+    private String message = "Click to Start!";
     private Thread animator;
 
     public Board() {
@@ -38,23 +41,30 @@ public class Board extends JPanel implements Runnable, SharedVariables {
 
             @Override
             public void mouseMoved(MouseEvent e) {
-//                System.out.println("Mouse: " + e.getX()+ ", " + e.getY());
-                player.move(e.getX(), e.getY());
-//                System.out.println("Player: " + player.getX()+ ", " + player.getY());
-
+                if(inGame){
+                    player.move(e.getX(), e.getY());
+                }
             }
+        });
 
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!inGame){
+                    gameInit();
+                }
+            }
         });
 
         setFocusable(true);
         d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
         setBackground(Color.black);
-        gameInit();
         setDoubleBuffered(true);
     }
 
     private void gameInit() {
         player = new Player();
+        inGame = true;
 
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 8; x++) {
@@ -64,50 +74,46 @@ public class Board extends JPanel implements Runnable, SharedVariables {
             }
         }
 
-        if (animator == null || !inGame) {
+        if (animator == null) {
 
             animator = new Thread(this);
             animator.start();
         }
+
+        BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+                cursorImg, new Point(0, 0), "blank cursor");
+        setCursor(blankCursor);
+    }
+
+    public void drawMessage(Graphics2D graphics2D){
+        graphics2D.setColor(Color.green);
+        graphics2D.setFont(new Font("Arial", Font.BOLD, 50));
+        graphics2D.drawString(message, 50,320);
     }
 
     public void drawPlayer(Graphics graphics) {
-
-        if (player.isVisible()) {
-
-            graphics.drawImage(player.getImage(), (int) player.getX(), (int) player.getY(), this);
-        }
-
-        if (player.isExploding()) {
-
-            player.explode();
-            inGame = false;
-        }
+        graphics.drawImage(player.getImage(), (int) player.getX(), (int) player.getY(), this);
     }
 
     @SuppressWarnings("Duplicates")
     public void drawAliens(Graphics graphics) {
-
+        Bomb bomb;
         for (Alien alien : aliens) {
-            if (alien.isVisible()) {
-                graphics.drawImage(alien.getImage(), (int) alien.getX(), (int) alien.getY(), this);
-            }
-            if (alien.isExploding()) {
-                alien.explode();
+            bomb = alien.getBomb();
+            graphics.drawImage(alien.getImage(), (int) alien.getX(), (int) alien.getY(), this);
+
+            if (!bomb.isDestroyed()){
+                bomb.moveDownwards();
+                graphics.drawImage(bomb.getImage(),(int) bomb.getX(),(int) bomb.getY(),this);
             }
         }
     }
 
     public void drawShots(Graphics graphics) {
-
         if (!shots.isEmpty()) {
             for (Shot shot : shots) {
-                if (shot.isVisible()) {
-                    graphics.drawImage(shot.getImage(), (int) shot.getX(), (int) shot.getY(), this);
-                }
-                if (shot.isExploding()) {
-                    shot.explode();
-                }
+                graphics.drawImage(shot.getImage(), (int) shot.getX(), (int) shot.getY(), this);
             }
         }
     }
@@ -123,6 +129,8 @@ public class Board extends JPanel implements Runnable, SharedVariables {
             drawAliens(graphics);
             drawShots(graphics);
 
+        }else {
+            drawMessage((Graphics2D) graphics);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -134,7 +142,7 @@ public class Board extends JPanel implements Runnable, SharedVariables {
 
         long nextGameTick = System.currentTimeMillis();
         long nextShot = System.currentTimeMillis();
-        long sleepTime, shootSleep = 2000;
+        long sleepTime, shootSleep = 1000;
         boolean isShooting = false;
 
         while (inGame) {
@@ -164,28 +172,71 @@ public class Board extends JPanel implements Runnable, SharedVariables {
 
     private void Update(boolean isShooting) {
 
-        if (aliens.isEmpty()) {
-            inGame = false;
-            message = "You won!";
+        if (aliens.isEmpty() && inGame) {
+            gameOver("You won!");
         }
 
         if (isShooting) {
             shots.add(new Shot((int) player.getX(), (int) player.getY()));
         }
-
-        collisionDetection();
+        shotCollisionDetection();
+        playerAlienCollisionDetection();
+        alienBombShots();
 
     }
 
-    public boolean collisionDetection() {
-        // TODO collision detection
+    public boolean playerAlienCollisionDetection(){
+        Iterator<Alien> alienIterator = aliens.iterator();
 
+
+        while (alienIterator.hasNext()) {
+            Alien alien = alienIterator.next();
+
+            if (alien.intersects(player) || alien.getBomb().intersects(player)) {
+                gameOver("You lost :(");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void gameOver(String message){
+        inGame = false;
+        animator = null;
+        shots.clear();
+        aliens.clear();
+        this.message = message;
+        setCursor(Cursor.getDefaultCursor());
+    }
+
+    public void alienBombShots(){
+        Random random = new Random();
+        Bomb bomb;
+        Iterator<Alien> alienIterator = aliens.iterator();
+
+        while (alienIterator.hasNext()) {
+            Alien alien = alienIterator.next();
+            bomb = alien.getBomb();
+            int value = random.nextInt(100 * aliens.size()) + 1;
+
+            if (value > 0 && value <= 5){
+                alien.getBomb().setDestroyed(false);
+            }
+
+            if (bomb.getY() > BOARD_HEIGHT){
+                bomb.setDestroyed(true);
+                alien.setBombCoordinates();
+
+            }
+        }
+    }
+
+    public boolean shotCollisionDetection() {
         if (shots.isEmpty() || aliens.isEmpty()) {
             return false;
         }
 
         Iterator<Shot> shotIterator = shots.iterator();
-
 
         boolean collision;
         while (shotIterator.hasNext()) {
