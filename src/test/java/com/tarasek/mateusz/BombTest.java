@@ -23,7 +23,7 @@ public class BombTest implements SharedVariables{
 
     @Test
     void isDestroyed(){
-        assertFalse(bomb.isDestroyed());
+        assertTrue(bomb.isDestroyed());
     }
 
     @Test
