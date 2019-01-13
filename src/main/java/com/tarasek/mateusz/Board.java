@@ -16,15 +16,19 @@ public class Board extends JPanel implements Runnable, SharedVariables {
     private ArrayList<Alien> aliens = new ArrayList<>();
     private ArrayList<Shot> shots = new ArrayList<>();
     private Player player;
+    private int playerLives;
+    private double points;
 
-    private final int FIRST_ALIEN_X = 48;
-    private final int FIRST_ALIEN_Y = 48;
+    private final int FIRST_ALIEN_X = 27;
+    private final int FIRST_ALIEN_Y = 27;
     private final int TICKS_PER_SECOND = 50;
     private final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
+    private final Color LIGHT_GREEN = new Color(48, 255, 135);
 
     private boolean inGame = false;
     private String message = "Click to Start!";
     private Thread animator;
+    private ImageIcon hearth;
 
     Board() {
 
@@ -68,14 +72,17 @@ public class Board extends JPanel implements Runnable, SharedVariables {
 
         for (int y = 4; y >= 0; y--) {
             for (int x = 0; x < 8; x++) {
-                Alien alien = new Alien(FIRST_ALIEN_X + 48 * x,
-                        FIRST_ALIEN_Y + 48 * y);
+                Alien alien = new Alien(FIRST_ALIEN_X + 53 * x,
+                        FIRST_ALIEN_Y + 53 * y);
                 aliens.add(alien);
             }
         }
 
         aliens.get(0).setMoving(true);
         calculateStep(aliens.get(0));
+        playerLives = 3;
+        hearth = new ImageIcon("src/Sprites/HEARTH.png");
+        points = 0;
 
         if (animator == null) {
 
@@ -107,6 +114,7 @@ public class Board extends JPanel implements Runnable, SharedVariables {
         while (alienIterator.hasNext()) {
             Alien alien = alienIterator.next();
             bomb = alien.getBomb();
+
             if (alien.isVisible()) {
                 graphics.drawImage(alien.getImage(), (int) alien.getX(), (int) alien.getY(), this);
             }
@@ -123,8 +131,53 @@ public class Board extends JPanel implements Runnable, SharedVariables {
                 bomb.moveDownwards();
                 graphics.drawImage(bomb.getImage(), (int) bomb.getX(), (int) bomb.getY(), this);
             }
+
         }
     }
+
+    private void drawShots(Graphics graphics) {
+        if (!shots.isEmpty()) {
+            for (Shot shot : shots) {
+                graphics.drawImage(shot.getImage(), (int) shot.getX(), (int) shot.getY(), this);
+            }
+        }
+    }
+
+    private void drawHearths(Graphics graphics){
+        for (int i = 0; i < playerLives; i++){
+            graphics.drawImage(hearth.getImage(), 480 - (i + 1) * 28, 3,this );
+        }
+    }
+
+
+    private void drawPoints(Graphics2D graphics2D){
+        String msg = String.format("Points: " + (int) points);
+        graphics2D.setColor(LIGHT_GREEN);
+        graphics2D.setFont(new Font("Arial", Font.BOLD, 20));
+        graphics2D.drawString(msg,5,20);
+    }
+
+    @Override
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+        graphics.setColor(Color.black);
+        graphics.fillRect(0, 0, d.width, d.height);
+
+        drawPoints((Graphics2D) graphics);
+        if (inGame) {
+            drawPlayer(graphics);
+            drawAliens(graphics);
+            drawShots(graphics);
+            drawHearths(graphics);
+            drawPlayer(graphics);
+        }else {
+            drawMessage((Graphics2D) graphics);
+        }
+
+        Toolkit.getDefaultToolkit().sync();
+        graphics.dispose();
+    }
+
 
     private void calculateStep(Alien alien){
         float step = (float) ((alien.getX() - player.getX()) / (alien.getY() - player.getY()));
@@ -136,48 +189,37 @@ public class Board extends JPanel implements Runnable, SharedVariables {
         alien.setStep(step);
     }
 
-    private void drawShots(Graphics graphics) {
-        if (!shots.isEmpty()) {
-            for (Shot shot : shots) {
-                graphics.drawImage(shot.getImage(), (int) shot.getX(), (int) shot.getY(), this);
-            }
-        }
-    }
-
-    @Override
-    public void paintComponent(Graphics graphics) {
-        super.paintComponent(graphics);
-        graphics.setColor(Color.black);
-        graphics.fillRect(0, 0, d.width, d.height);
-
-        if (inGame) {
-            drawPlayer(graphics);
-            drawAliens(graphics);
-            drawShots(graphics);
-
-        }else {
-            drawMessage((Graphics2D) graphics);
-        }
-
-        Toolkit.getDefaultToolkit().sync();
-        graphics.dispose();
-    }
-
     private void playerAlienCollisionDetection(){
 
         for (Alien alien : aliens) {
-            if (alien.intersects(player) || alien.getBomb().intersects(player)) {
-                gameOver("You lost :(");
+            if (alien.getBomb().intersects(player)) {
+                alien.getBomb().setDestroyed(true);
+                alien.setBombCoordinates();
+                if (playerLives > 1){
+                    playerLives--;
+                }else {
+                    gameOver("You lost :(");
+                }
+                return;
+            }else if(alien.intersects(player)){
+                gameOver("Alien Crush :(");
                 return;
             }
         }
     }
 
     private void gameOver(String message){
+        playerLives--;
+        points += playerLives * 300;
+        if (aliens.size() == 0){
+            points += 300;
+        }
+
         inGame = false;
         animator = null;
         shots.clear();
         aliens.clear();
+        playerLives = 3;
         this.message = message;
         setCursor(Cursor.getDefaultCursor());
     }
@@ -208,10 +250,13 @@ public class Board extends JPanel implements Runnable, SharedVariables {
             if (alien.getY() > BOARD_HEIGHT || alien.getX() < 0 - alien.width || alien.getX() > BOARD_WIDTH){
                 alien.setVisible(false);
                 alien.setBombCoordinates();
-                if (alien == aliens.get(0)){
-                    aliens.get(1).setMoving(true);
-                }else{
-                    aliens.get(0).setMoving(true);
+                if (aliens.size() >= 2) {
+                    if (alien == aliens.get(0)) {
+                        aliens.get(1).setMoving(true);
+                    } else {
+                        aliens.get(0).setMoving(true);
+                    }
+                    return;
                 }
             }
         }
@@ -240,6 +285,7 @@ public class Board extends JPanel implements Runnable, SharedVariables {
                 if (collision && alien.isVisible()) {
                     shotIterator.remove();
                     alien.setVisible(false);
+                    points += 50 + (500 / (aliens.size() + 1));
 
                     if (aliens.size() >= 2){
                         if (alien == aliens.get(0)){
