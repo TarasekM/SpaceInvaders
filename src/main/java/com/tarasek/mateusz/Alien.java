@@ -6,7 +6,6 @@ public class Alien extends Sprite{
 
     private final int ALIEN_WIDTH = 48;
     private final int ALIEN_HEIGHT = 48;
-    private final String alienSprite = "src/Sprites/DODO_ALIEN.png";
     private Bomb bomb;
     private boolean moving;
     private float step;
@@ -17,7 +16,7 @@ public class Alien extends Sprite{
 
     private void initAlien(int x, int y){
         bomb = new Bomb(x - 3 + ALIEN_WIDTH/2 , y + ALIEN_HEIGHT);
-        ImageIcon imageIcon = new ImageIcon(alienSprite);
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("DODO_ALIEN.png"));
         setImage(imageIcon.getImage());
         width = ALIEN_WIDTH;
         height = ALIEN_HEIGHT;

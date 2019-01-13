@@ -4,7 +4,6 @@ import javax.swing.*;
 
 public class Bomb extends Sprite implements SharedVariables{
 
-    private final String bombSprite = "src/Sprites/DODO_BOMB.png";
     private boolean destroyed;
 
     public Bomb(int x,int y){
@@ -13,7 +12,7 @@ public class Bomb extends Sprite implements SharedVariables{
 
     private void initBomb(int x, int y){
         setDestroyed(true);
-        ImageIcon imageIcon = new ImageIcon(bombSprite);
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("DODO_BOMB.png"));
         setX(x);
         setY(y);
         width = 12;

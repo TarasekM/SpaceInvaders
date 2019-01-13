@@ -81,7 +81,7 @@ public class Board extends JPanel implements Runnable, SharedVariables {
         aliens.get(0).setMoving(true);
         calculateStep(aliens.get(0));
         playerLives = 3;
-        hearth = new ImageIcon("src/Sprites/HEARTH.png");
+        hearth = new ImageIcon(getClass().getResource("HEARTH.png"));
         points = 0;
 
         if (animator == null) {

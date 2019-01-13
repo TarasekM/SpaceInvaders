@@ -9,14 +9,13 @@ public class Player extends Sprite implements SharedVariables{
     private final int PLAYER_WIDTH = 48;
     private final int PLAYER_HEIGHT = 48;
 
-    private final String playerSprite = "src/Sprites/DODO_SpaceShip.png";
-
     public Player(){
         initPLayer();
     }
 
     private void initPLayer(){
-        ImageIcon imageIcon = new ImageIcon(playerSprite);
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("DODO_SpaceShip.png"));
+
         setImage(imageIcon.getImage());
         setX(START_X);
         setY(START_Y);

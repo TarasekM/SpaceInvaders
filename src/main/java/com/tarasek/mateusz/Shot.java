@@ -8,14 +8,12 @@ public class Shot extends Sprite implements SharedVariables{
     private final int RADIUS = 5;
     private Ellipse2D.Float collider;
 
-    private final String shotSprite = "src/Sprites/DODO_SHOT.png";
-
     public Shot(int x, int y){
         initShot(x, y);
     }
 
     private void initShot(int x, int y){
-        ImageIcon imageIcon = new ImageIcon(shotSprite);
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("DODO_SHOT.png"));
         setImage(imageIcon.getImage());
         setX(x + SHOT_WIDTH_SPACE);
         setY(y + SHOT_HEIGHT_SPACE);
