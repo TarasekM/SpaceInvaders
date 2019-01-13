@@ -1,6 +1,5 @@
 package com.tarasek.mateusz;
 
-import javax.imageio.ImageIO;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 
