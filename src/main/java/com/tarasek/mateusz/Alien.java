@@ -8,6 +8,8 @@ public class Alien extends Sprite{
     private final int ALIEN_HEIGHT = 48;
     private final String alienSprite = "src/Sprites/DODO_ALIEN.png";
     private Bomb bomb;
+    private boolean moving;
+    private float step;
 
     public Alien(int x, int y){
         initAlien(x, y);
@@ -21,6 +23,8 @@ public class Alien extends Sprite{
         height = ALIEN_HEIGHT;
         this.x = x;
         this.y = y;
+        moving = false;
+        step = 0;
     }
 
     public void move(int x, int y){
@@ -36,6 +40,22 @@ public class Alien extends Sprite{
     public void setBombCoordinates(){
        bomb.setX((int) this.x - 3 + ALIEN_WIDTH/2);
        bomb.setY((int) this.y + ALIEN_HEIGHT);
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving){
+        this.moving = moving;
+    }
+
+    public float getStep() {
+        return step;
+    }
+
+    public void setStep(float step) {
+        this.step = step;
     }
 
 }
