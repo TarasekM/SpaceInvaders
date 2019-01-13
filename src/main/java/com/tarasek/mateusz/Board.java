@@ -26,7 +26,7 @@ public class Board extends JPanel implements Runnable, SharedVariables {
     private String message = "Click to Start!";
     private Thread animator;
 
-    public Board() {
+    Board() {
 
         initBoard();
     }
@@ -66,13 +66,16 @@ public class Board extends JPanel implements Runnable, SharedVariables {
         player = new Player();
         inGame = true;
 
-        for (int y = 0; y < 5; y++) {
+        for (int y = 4; y >= 0; y--) {
             for (int x = 0; x < 8; x++) {
                 Alien alien = new Alien(FIRST_ALIEN_X + 48 * x,
                         FIRST_ALIEN_Y + 48 * y);
                 aliens.add(alien);
             }
         }
+
+        aliens.get(0).setMoving(true);
+        calculateStep(aliens.get(0));
 
         if (animator == null) {
 
@@ -86,31 +89,54 @@ public class Board extends JPanel implements Runnable, SharedVariables {
         setCursor(blankCursor);
     }
 
-    public void drawMessage(Graphics2D graphics2D){
+    private void drawMessage(Graphics2D graphics2D){
         graphics2D.setColor(Color.green);
         graphics2D.setFont(new Font("Arial", Font.BOLD, 50));
         graphics2D.drawString(message, 50,320);
     }
 
-    public void drawPlayer(Graphics graphics) {
+    private void drawPlayer(Graphics graphics) {
         graphics.drawImage(player.getImage(), (int) player.getX(), (int) player.getY(), this);
     }
 
-    @SuppressWarnings("Duplicates")
-    public void drawAliens(Graphics graphics) {
-        Bomb bomb;
-        for (Alien alien : aliens) {
-            bomb = alien.getBomb();
-            graphics.drawImage(alien.getImage(), (int) alien.getX(), (int) alien.getY(), this);
+    private void drawAliens(Graphics graphics) {
 
-            if (!bomb.isDestroyed()){
+        Iterator<Alien> alienIterator = aliens.iterator();
+        Bomb bomb;
+
+        while (alienIterator.hasNext()) {
+            Alien alien = alienIterator.next();
+            bomb = alien.getBomb();
+            if (alien.isVisible()) {
+                graphics.drawImage(alien.getImage(), (int) alien.getX(), (int) alien.getY(), this);
+            }
+
+            if (alien.isMoving()) {
+                if(alien.getStep() == 0){
+                    calculateStep(alien);
+                }
+                alien.setX((float) (alien.getX() + ALIEN_SPEED * alien.getStep()));
+                alien.setY((float) (alien.getY() + ALIEN_SPEED));
+            }
+
+            if (!bomb.isDestroyed()) {
                 bomb.moveDownwards();
-                graphics.drawImage(bomb.getImage(),(int) bomb.getX(),(int) bomb.getY(),this);
+                graphics.drawImage(bomb.getImage(), (int) bomb.getX(), (int) bomb.getY(), this);
             }
         }
     }
 
-    public void drawShots(Graphics graphics) {
+    private void calculateStep(Alien alien){
+        float step = (float) ((alien.getX() - player.getX()) / (alien.getY() - player.getY()));
+        if (step > ALIEN_SPEED){
+            step = ALIEN_SPEED;
+        }else if(step < -ALIEN_SPEED){
+            step = -ALIEN_SPEED;
+        }
+        alien.setStep(step);
+    }
+
+    private void drawShots(Graphics graphics) {
         if (!shots.isEmpty()) {
             for (Shot shot : shots) {
                 graphics.drawImage(shot.getImage(), (int) shot.getX(), (int) shot.getY(), this);
@@ -137,12 +163,114 @@ public class Board extends JPanel implements Runnable, SharedVariables {
         graphics.dispose();
     }
 
+    private void playerAlienCollisionDetection(){
+
+        for (Alien alien : aliens) {
+            if (alien.intersects(player) || alien.getBomb().intersects(player)) {
+                gameOver("You lost :(");
+                return;
+            }
+        }
+    }
+
+    private void gameOver(String message){
+        inGame = false;
+        animator = null;
+        shots.clear();
+        aliens.clear();
+        this.message = message;
+        setCursor(Cursor.getDefaultCursor());
+    }
+
+    private void alienBombShots(){
+        Random random = new Random();
+        Bomb bomb;
+        Iterator<Alien> alienIterator = aliens.iterator();
+
+        while (alienIterator.hasNext()) {
+            Alien alien = alienIterator.next();
+            bomb = alien.getBomb();
+            int value = random.nextInt(100 * aliens.size()) + 1;
+
+            if (value > 0 && value <= 5){
+                alien.getBomb().setDestroyed(false);
+            }
+
+            if (bomb.getY() > BOARD_HEIGHT){
+                bomb.setDestroyed(true);
+                alien.setBombCoordinates();
+
+                if (!alien.isVisible()){
+                    alienIterator.remove();
+                }
+            }
+
+            if (alien.getY() > BOARD_HEIGHT || alien.getX() < 0 - alien.width || alien.getX() > BOARD_WIDTH){
+                alien.setVisible(false);
+                alien.setBombCoordinates();
+                if (alien == aliens.get(0)){
+                    aliens.get(1).setMoving(true);
+                }else{
+                    aliens.get(0).setMoving(true);
+                }
+            }
+        }
+    }
+
+    private void shotCollisionDetection() {
+        if (shots.isEmpty() || aliens.isEmpty()) {
+            return;
+        }
+
+        Iterator<Shot> shotIterator = shots.iterator();
+
+        boolean collision;
+        while (shotIterator.hasNext()) {
+            Shot shot = shotIterator.next();
+            shot.moveUpwards();
+
+            Iterator<Alien> alienIterator = aliens.iterator();
+            while (alienIterator.hasNext()) {
+
+                Alien alien = alienIterator.next();
+                int alienWidth = alien.getImage().getWidth(this);
+                int alienHeight = alien.getImage().getHeight(this);
+                collision = shot.getCollider().intersects(alien.getX(), alien.getY(), alienWidth, alienHeight);
+
+                if (collision && alien.isVisible()) {
+                    shotIterator.remove();
+                    alien.setVisible(false);
+
+                    if (aliens.size() >= 2){
+                        if (alien == aliens.get(0)){
+                            aliens.get(1).setMoving(true);
+                        }else{
+                            aliens.get(0).setMoving(true);
+                        }
+                        return;
+                    }
+                }
+
+                if (alien.getBomb().isDestroyed() && !alien.isVisible()){
+                    alienIterator.remove();
+                }
+            }
+
+            if (shot.getY() < -10){
+                shotIterator.remove();
+                return;
+            }
+        }
+
+    }
+
+
     @Override
     public void run() {
 
         long nextGameTick = System.currentTimeMillis();
         long nextShot = System.currentTimeMillis();
-        long sleepTime, shootSleep = 1000;
+        long sleepTime, shootSleep = 800;
         boolean isShooting = false;
 
         while (inGame) {
@@ -182,88 +310,5 @@ public class Board extends JPanel implements Runnable, SharedVariables {
         shotCollisionDetection();
         playerAlienCollisionDetection();
         alienBombShots();
-
-    }
-
-    public boolean playerAlienCollisionDetection(){
-        Iterator<Alien> alienIterator = aliens.iterator();
-
-
-        while (alienIterator.hasNext()) {
-            Alien alien = alienIterator.next();
-
-            if (alien.intersects(player) || alien.getBomb().intersects(player)) {
-                gameOver("You lost :(");
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void gameOver(String message){
-        inGame = false;
-        animator = null;
-        shots.clear();
-        aliens.clear();
-        this.message = message;
-        setCursor(Cursor.getDefaultCursor());
-    }
-
-    public void alienBombShots(){
-        Random random = new Random();
-        Bomb bomb;
-        Iterator<Alien> alienIterator = aliens.iterator();
-
-        while (alienIterator.hasNext()) {
-            Alien alien = alienIterator.next();
-            bomb = alien.getBomb();
-            int value = random.nextInt(100 * aliens.size()) + 1;
-
-            if (value > 0 && value <= 5){
-                alien.getBomb().setDestroyed(false);
-            }
-
-            if (bomb.getY() > BOARD_HEIGHT){
-                bomb.setDestroyed(true);
-                alien.setBombCoordinates();
-
-            }
-        }
-    }
-
-    public boolean shotCollisionDetection() {
-        if (shots.isEmpty() || aliens.isEmpty()) {
-            return false;
-        }
-
-        Iterator<Shot> shotIterator = shots.iterator();
-
-        boolean collision;
-        while (shotIterator.hasNext()) {
-            Shot shot = shotIterator.next();
-            shot.moveUpwards();
-
-            Iterator<Alien> alienIterator = aliens.iterator();
-            while (alienIterator.hasNext()) {
-
-                Alien alien = alienIterator.next();
-                int alienWidth = alien.getImage().getWidth(this);
-                int alienHeight = alien.getImage().getHeight(this);
-                collision = shot.getCollider().intersects(alien.getX(), alien.getY(), alienWidth, alienHeight);
-
-                if (collision) {
-                    shotIterator.remove();
-                    alienIterator.remove();
-                    return true;
-                }
-            }
-
-            if (shot.getY() < -10){
-                shotIterator.remove();
-                return false;
-            }
-        }
-
-        return false;
     }
 }
