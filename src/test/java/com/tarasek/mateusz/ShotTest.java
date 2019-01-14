@@ -16,7 +16,6 @@ public class ShotTest implements SharedVariables{
 
     @Test
     void init(){
-        assertNotNull(shot.getImage());
         assertEquals(25 + SHOT_WIDTH_SPACE, shot.getX());
         assertEquals(50 + SHOT_HEIGHT_SPACE, shot.getY());
     }

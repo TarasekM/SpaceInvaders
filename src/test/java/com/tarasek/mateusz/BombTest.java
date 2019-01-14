@@ -16,7 +16,6 @@ public class BombTest implements SharedVariables{
 
     @Test
     void init(){
-        assertNotNull(bomb.getImage());
         assertEquals(10, bomb.getX());
         assertEquals(20, bomb.getY());
     }

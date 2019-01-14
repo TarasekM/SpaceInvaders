@@ -18,7 +18,6 @@ public class AlienTest {
 
     @Test
     void init(){
-        assertNotNull(alien.getImage());
         assertEquals(50, alien.getX());
         assertEquals(60, alien.getY());
     }
