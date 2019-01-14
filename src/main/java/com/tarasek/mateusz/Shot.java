@@ -13,8 +13,13 @@ public class Shot extends Sprite implements SharedVariables{
     }
 
     private void initShot(int x, int y){
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource("DODO_SHOT.png"));
-        setImage(imageIcon.getImage());
+        try{
+            ImageIcon imageIcon = new ImageIcon(getClass().getResource("DODO_SHOT.png"));
+            setImage(imageIcon.getImage());
+        }catch (NullPointerException e){
+            System.out.println(e);
+        }
+
         setX(x + SHOT_WIDTH_SPACE);
         setY(y + SHOT_HEIGHT_SPACE);
         collider = new Ellipse2D.Float(this.x-1, this.y-1, RADIUS*2, 2*RADIUS);

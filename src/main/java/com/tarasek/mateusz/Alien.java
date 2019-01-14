@@ -15,9 +15,14 @@ public class Alien extends Sprite{
     }
 
     private void initAlien(int x, int y){
+        try{
+            ImageIcon imageIcon = new ImageIcon(getClass().getResource("DODO_ALIEN.png"));
+            setImage(imageIcon.getImage());
+        }catch (NullPointerException e){
+            System.out.println(e);
+        }
+
         bomb = new Bomb(x - 3 + ALIEN_WIDTH/2 , y + ALIEN_HEIGHT);
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource("DODO_ALIEN.png"));
-        setImage(imageIcon.getImage());
         width = ALIEN_WIDTH;
         height = ALIEN_HEIGHT;
         this.x = x;
