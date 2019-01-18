@@ -14,13 +14,15 @@ class AlienLVL1 extends Alien {
      */
 
     AlienLVL1(int x, int y, ImageIcon sprite){
-        super(x,y,48,48,sprite);
+        super(x,y,48,48);
+        setSprite(sprite);
         setHP(1);
         setSpeed(1);
     }
 
     AlienLVL1(int x, int y, int width, int height, ImageIcon sprite){
-        super(x, y, width, height, sprite);
+        super(x, y, width, height);
+        setSprite(sprite);
         setHP(1);
         setSpeed(1);
     }

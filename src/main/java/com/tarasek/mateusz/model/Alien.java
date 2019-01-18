@@ -19,13 +19,8 @@ public abstract class Alien extends Rectangle2D.Float {
     private float step;
     private float speed;
 
-    Alien(int x, int y, int width, int height, ImageIcon sprite) {
-        super();
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.sprite = sprite;
+    Alien(int x, int y, int width, int height) {
+        super(x, y, width, height);
         bomb = new Bomb(x - 3 + width/2 , y + height);
     }
 
@@ -52,6 +47,10 @@ public abstract class Alien extends Rectangle2D.Float {
 
     public ImageIcon getSprite() {
         return sprite;
+    }
+
+    public void setSprite(ImageIcon sprite) {
+        this.sprite = sprite;
     }
 
     public void setMoving(boolean moving) {

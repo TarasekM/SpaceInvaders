@@ -14,13 +14,16 @@ class AlienBoss extends Alien {
      */
 
     AlienBoss(int x, int y, ImageIcon sprite){
-        super(x,y,192,96,sprite);
+        super(x,y,192,96);
+        setSprite(sprite);
+
         setHP(20);
         setSpeed(0.8f);
     }
 
     AlienBoss(int x, int y, int width, int height, ImageIcon sprite){
-        super(x, y, width, height, sprite);
+        super(x, y, width, height);
+        setSprite(sprite);
         setHP(20);
         setSpeed(0.8f);
     }
