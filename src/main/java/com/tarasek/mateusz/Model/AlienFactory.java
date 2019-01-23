@@ -1,6 +1,7 @@
-package com.tarasek.mateusz.model;
+package com.tarasek.mateusz.Model;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Mateusz Tarasek
@@ -28,15 +29,16 @@ class AlienFactory {
         switch (alien_sprite){
             case ALIEN_LVL1:
                 try{
-                    imageIcon = new ImageIcon(getClass().getResource("ALIEN_LVL1.png"));
+                    imageIcon = new ImageIcon("src/main/resources/ALIEN_LVL1.png");
                 }catch (NullPointerException e){
+                    System.out.println(e);
                     imageIcon = null;
                 }
                 return new AlienLVL1(x, y, imageIcon);
 
             case ALIEN_LVL2:
                 try{
-                    imageIcon = new ImageIcon(getClass().getResource("ALIEN_LVL2.png"));
+                    imageIcon = new ImageIcon("src/main/resources/ALIEN_LVL2.png");
                 }catch (NullPointerException e){
                     imageIcon = null;
                 }
@@ -44,7 +46,8 @@ class AlienFactory {
 
             case ALIEN_LVL3:
                 try{
-                    imageIcon = new ImageIcon(getClass().getResource("ALIEN_LVL3.png"));
+                    imageIcon = new ImageIcon("src/main/resources/ALIEN_LVL3.png");
+
 
                 }catch (NullPointerException e){
                     imageIcon = null;
@@ -53,7 +56,8 @@ class AlienFactory {
 
             case ALIEN_LVL4:
                 try{
-                    imageIcon = new ImageIcon(getClass().getResource("ALIEN_LVL4.png"));
+                    imageIcon = new ImageIcon("src/main/resources/ALIEN_LVL4.png");
+
 
                 }catch (NullPointerException e){
                     imageIcon = null;
@@ -63,7 +67,8 @@ class AlienFactory {
 
             case ALIEN_LVL5:
                 try{
-                    imageIcon = new ImageIcon(getClass().getResource("ALIEN_LVL5.png"));
+                    imageIcon = new ImageIcon("src/main/resources/ALIEN_LVL5.png");
+
                 }catch (NullPointerException e){
                     imageIcon = null;
                 }

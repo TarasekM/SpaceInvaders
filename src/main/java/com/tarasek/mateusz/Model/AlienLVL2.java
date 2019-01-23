@@ -1,30 +1,31 @@
-package com.tarasek.mateusz.model;
+package com.tarasek.mateusz.Model;
 
 import javax.swing.*;
 
 /**
  * @author Mateusz Tarasek
- * Model for AlienLVL3
+ * Model for AlienLVL2
  */
-class AlienLVL5 extends Alien {
+class AlienLVL2 extends Alien {
 
     /**
      * Default dimensions of alien is 48x48 pixels.
      * For flexibility you can create alien with other width and height.
      */
 
-    AlienLVL5(int x, int y, ImageIcon sprite){
+    AlienLVL2(int x, int y, ImageIcon sprite){
         super(x,y,48,48);
         setSprite(sprite);
-        setHP(5);
-        setSpeed(1.8f);
+
+        setHP(2);
+        setSpeed(1.2f);
     }
 
-    AlienLVL5(int x, int y, int width, int height, ImageIcon sprite){
+    AlienLVL2(int x, int y, int width, int height, ImageIcon sprite){
         super(x, y, width, height);
         setSprite(sprite);
-        setHP(5);
-        setSpeed(1.8f);
+        setHP(2);
+        setSpeed(1.2f);
     }
 
 }

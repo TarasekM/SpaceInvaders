@@ -1,4 +1,4 @@
-package com.tarasek.mateusz.model;
+package com.tarasek.mateusz.Model;
 
 import javax.swing.*;
 

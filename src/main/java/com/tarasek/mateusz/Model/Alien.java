@@ -1,6 +1,4 @@
-package com.tarasek.mateusz.model;
-
-import com.tarasek.mateusz.Bomb;
+package com.tarasek.mateusz.Model;
 
 import javax.swing.*;
 import java.awt.geom.Rectangle2D;
@@ -13,24 +11,20 @@ import java.awt.geom.Rectangle2D;
 public abstract class Alien extends Rectangle2D.Float {
 
     private Bomb bomb;
-    private boolean moving;
     private ImageIcon sprite;
     private int HP;
     private float step;
     private float speed;
+    private boolean moving;
+    private boolean visible;
 
     Alien(int x, int y, int width, int height) {
         super(x, y, width, height);
         bomb = new Bomb(x - 3 + width/2 , y + height);
+        visible = true;
+        moving = false;
     }
 
-    public float getStep() {
-        return step;
-    }
-
-    public void setStep(float step) {
-        this.step = step;
-    }
 
     public Bomb getBomb() {
         return bomb;
@@ -53,10 +47,6 @@ public abstract class Alien extends Rectangle2D.Float {
         this.sprite = sprite;
     }
 
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
     public int getHP() {
         return HP;
     }
@@ -65,11 +55,43 @@ public abstract class Alien extends Rectangle2D.Float {
         this.HP = HP;
     }
 
+    public float getStep() {
+        return step;
+    }
+
+    public void setStep(float step) {
+        this.step = step;
+    }
+
     public float getSpeed() {
         return speed;
     }
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public void setX(float x){
+        this.x = x;
+    }
+
+    public void setY(float y){
+        this.y = y;
     }
 }
