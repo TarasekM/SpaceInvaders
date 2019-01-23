@@ -1,4 +1,4 @@
-package com.tarasek.mateusz;
+package com.tarasek.mateusz.Model;
 
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;

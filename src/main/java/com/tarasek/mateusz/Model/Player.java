@@ -1,8 +1,10 @@
-package com.tarasek.mateusz;
+package com.tarasek.mateusz.Model;
+
+import com.tarasek.mateusz.SharedVariables;
 
 import javax.swing.*;
 
-public class Player extends Sprite implements SharedVariables{
+public class Player extends Sprite implements SharedVariables {
 
     private final int START_X = 216;
     private final int START_Y = 544;
@@ -15,10 +17,10 @@ public class Player extends Sprite implements SharedVariables{
 
     private void initPLayer(){
         try{
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("DODO_SpaceShip.png"));
+            ImageIcon imageIcon = new ImageIcon("src/main/resources/DODO_SpaceShip.png");
             setImage(imageIcon.getImage());
         }catch (NullPointerException e){
-            System.out.println(e);
+            setImage(null);
         }
 
         setX(START_X);

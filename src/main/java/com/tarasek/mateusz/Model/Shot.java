@@ -1,9 +1,11 @@
-package com.tarasek.mateusz;
+package com.tarasek.mateusz.Model;
+
+import com.tarasek.mateusz.SharedVariables;
 
 import javax.swing.*;
 import java.awt.geom.Ellipse2D;
 
-public class Shot extends Sprite implements SharedVariables{
+public class Shot extends Sprite implements SharedVariables {
 
     private final int RADIUS = 5;
     private Ellipse2D.Float collider;
@@ -14,7 +16,7 @@ public class Shot extends Sprite implements SharedVariables{
 
     private void initShot(int x, int y){
         try{
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("DODO_SHOT.png"));
+            ImageIcon imageIcon = new ImageIcon("src/main/resources/DODO_SHOT.png");
             setImage(imageIcon.getImage());
         }catch (NullPointerException e){
             System.out.println(e);
