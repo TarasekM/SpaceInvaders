@@ -7,6 +7,5 @@ public interface SharedVariables {
     public static final int SHOT_HEIGHT_SPACE = 2;
     public static final int SHOT_SPEED = 3;
     public static final int BOMB_SPEED = 4;
-    public static final int ALIEN_SPEED = 1;
 }
 
