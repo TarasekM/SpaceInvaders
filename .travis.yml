@@ -6,4 +6,3 @@ jdk:
 
 script:
   - mvn clean package
-  - java -cp target/SpaceInvaders-1.0-SNAPSHOT.jar com.tarasek.mateusz.SpaceInvaders
