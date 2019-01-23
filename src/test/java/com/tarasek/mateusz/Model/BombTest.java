@@ -1,11 +1,12 @@
-package com.tarasek.mateusz;
+package com.tarasek.mateusz.Model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.tarasek.mateusz.SharedVariables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class BombTest implements SharedVariables{
+public class BombTest implements SharedVariables {
 
     Bomb bomb;
 
