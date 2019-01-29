@@ -1,7 +1,5 @@
 package com.tarasek.mateusz.Model;
 
-import javax.swing.*;
-
 /**
  * @author Mateusz Tarasek
  * Model for AlienLVL2
@@ -13,17 +11,14 @@ class AlienLVL2 extends Alien {
      * For flexibility you can create alien with other width and height.
      */
 
-    AlienLVL2(int x, int y, ImageIcon sprite){
-        super(x,y,48,48);
-        setSprite(sprite);
-
+    AlienLVL2(int x, int y){
+        super(x,y,48,48, "/ALIEN_LVL2.png");
         setHP(2);
         setSpeed(1.2f);
     }
 
-    AlienLVL2(int x, int y, int width, int height, ImageIcon sprite){
-        super(x, y, width, height);
-        setSprite(sprite);
+    AlienLVL2(int x, int y, int width, int height){
+        super(x, y, width, height, "/ALIEN_LVL2.png");
         setHP(2);
         setSpeed(1.2f);
     }
