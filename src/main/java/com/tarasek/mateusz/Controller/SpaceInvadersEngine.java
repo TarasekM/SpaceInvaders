@@ -22,7 +22,7 @@ public class SpaceInvadersEngine implements Runnable{
     public void run() {
         long nextGameTick = System.currentTimeMillis();
         long nextShot = System.currentTimeMillis();
-        long sleepTime, shootSleep = 1000;
+        long sleepTime, shootSleep = 500;
         boolean isShooting = false;
         UpdateView();
 
