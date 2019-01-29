@@ -17,7 +17,7 @@ public class Player extends Sprite implements SharedVariables {
 
     private void initPLayer(){
         try{
-            ImageIcon imageIcon = new ImageIcon("src/main/resources/DODO_SpaceShip.png");
+            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/DODO_SpaceShip.png"));
             setImage(imageIcon.getImage());
         }catch (NullPointerException e){
             setImage(null);

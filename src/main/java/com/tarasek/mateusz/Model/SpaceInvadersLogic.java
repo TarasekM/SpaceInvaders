@@ -12,8 +12,8 @@ import java.util.Random;
 
 public class SpaceInvadersLogic {
 
-    private final int FIRST_ALIEN_X = 27;
-    private final int FIRST_ALIEN_Y = 27;
+    final int FIRST_ALIEN_X = 27;
+    final int FIRST_ALIEN_Y = 27;
 
     private int level;
     private int playerLives;
@@ -71,7 +71,7 @@ public class SpaceInvadersLogic {
      * */
     private void initHearth(){
         try{
-            hearth = new ImageIcon("src/main/resources/HEARTH.png");
+            hearth = new ImageIcon(getClass().getResource("/HEARTH.png"));
         }catch (NullPointerException e){
             hearth = null;
         }
@@ -247,7 +247,7 @@ public class SpaceInvadersLogic {
         shots.add(new Shot((int) player.getX(), (int) player.getY()));
     }
 
-    public void endGameCheck(){
+    public boolean endGameCheck(){
         if (aliens.isEmpty() && inGame) {
             if (level >= 5){
                 gameOver("You won!");
@@ -256,7 +256,9 @@ public class SpaceInvadersLogic {
                 level++;
                 gameOver(String.format("Level %d",level));
             }
+            return true;
         }
+        return false;
     }
 
     /**

@@ -15,7 +15,7 @@ public class Bomb extends Sprite implements SharedVariables {
     private void initBomb(int x, int y){
         setDestroyed(true);
         try{
-            ImageIcon imageIcon = new ImageIcon("src/main/resources/DODO_BOMB.png");
+            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/DODO_BOMB.png"));
             setImage(imageIcon.getImage());
         }catch (NullPointerException e){
             setImage(null);
