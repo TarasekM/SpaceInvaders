@@ -24,64 +24,24 @@ class AlienFactory {
     *@return new generated Aliens object */
 
     Alien generateAlien(ALIEN_NAME alien_sprite, int x, int y){
-
-        ImageIcon imageIcon;
         switch (alien_sprite){
             case ALIEN_LVL1:
-                try{
-                    imageIcon = new ImageIcon("src/main/resources/ALIEN_LVL1.png");
-                }catch (NullPointerException e){
-                    System.out.println(e);
-                    imageIcon = null;
-                }
-                return new AlienLVL1(x, y, imageIcon);
+                return new AlienLVL1(x, y);
 
             case ALIEN_LVL2:
-                try{
-                    imageIcon = new ImageIcon("src/main/resources/ALIEN_LVL2.png");
-                }catch (NullPointerException e){
-                    imageIcon = null;
-                }
-                return new AlienLVL2(x, y, imageIcon);
+                return new AlienLVL2(x, y);
 
             case ALIEN_LVL3:
-                try{
-                    imageIcon = new ImageIcon("src/main/resources/ALIEN_LVL3.png");
-
-
-                }catch (NullPointerException e){
-                    imageIcon = null;
-                }
-                return new AlienLVL3(x, y, imageIcon);
+                return new AlienLVL3(x, y);
 
             case ALIEN_LVL4:
-                try{
-                    imageIcon = new ImageIcon("src/main/resources/ALIEN_LVL4.png");
-
-
-                }catch (NullPointerException e){
-                    imageIcon = null;
-                }
-
-                return new AlienLVL4(x, y, imageIcon);
+                return new AlienLVL4(x, y);
 
             case ALIEN_LVL5:
-                try{
-                    imageIcon = new ImageIcon("src/main/resources/ALIEN_LVL5.png");
-
-                }catch (NullPointerException e){
-                    imageIcon = null;
-                }
-                return new AlienLVL5(x, y, imageIcon);
+                return new AlienLVL5(x, y);
 
             case ALIEN_BOSS:
-                try{
-                    imageIcon = new ImageIcon(getClass().getResource("ALIEN_BOSS.png"));
-
-                }catch (NullPointerException e){
-                    imageIcon = null;
-                }
-                return new AlienBoss(x, y, imageIcon);
+                return new AlienBoss(x, y);
 
             default:
                 return null;
