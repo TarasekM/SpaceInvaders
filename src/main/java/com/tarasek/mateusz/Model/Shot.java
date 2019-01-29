@@ -19,7 +19,7 @@ public class Shot extends Sprite implements SharedVariables {
             ImageIcon imageIcon = new ImageIcon(getClass().getResource("/DODO_SHOT.png"));
             setImage(imageIcon.getImage());
         }catch (NullPointerException e){
-            System.out.println(e);
+            setImage(null);
         }
 
         setX(x + SHOT_WIDTH_SPACE);
