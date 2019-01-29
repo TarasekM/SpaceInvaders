@@ -8,9 +8,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.net.URL;
+
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 public class Board extends JPanel {
@@ -125,10 +125,15 @@ public class Board extends JPanel {
 
         Iterator<Alien> alienIterator = aliens.iterator();
         Bomb bomb;
-
+        Alien alien;
         while (alienIterator.hasNext()) {
-            Alien alien = alienIterator.next();
-            bomb = alien.getBomb();
+
+            try{
+                alien = alienIterator.next();
+                bomb = alien.getBomb();
+            }catch (ConcurrentModificationException e){
+                break;
+            }
 
             if (alien.isVisible()) {
                 graphics.drawImage(alien.getSprite().getImage(), (int) alien.getX(), (int) alien.getY(), this);
