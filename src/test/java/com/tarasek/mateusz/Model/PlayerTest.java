@@ -2,7 +2,6 @@ package com.tarasek.mateusz.Model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.tarasek.mateusz.Model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

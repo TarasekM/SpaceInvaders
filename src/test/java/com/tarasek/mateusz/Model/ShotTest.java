@@ -1,6 +1,5 @@
 package com.tarasek.mateusz.Model;
 
-import com.tarasek.mateusz.Model.Shot;
 import com.tarasek.mateusz.SharedVariables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
