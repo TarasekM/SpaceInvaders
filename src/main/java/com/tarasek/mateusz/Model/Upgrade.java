@@ -8,11 +8,15 @@ public abstract class Upgrade extends Ellipse2D.Float {
     private ImageIcon sprite;
     private float value;
     private float speed;
+    private boolean isVisible;
+    private String name;
 
     Upgrade(int x, int y, int radius, float value, String name){
         super(x,y,radius,radius);
         this.value = value;
         this.speed = 2;
+        this.isVisible = false;
+        this.name = name;
         setSprite(name);
     }
 
@@ -46,5 +50,17 @@ public abstract class Upgrade extends Ellipse2D.Float {
 
     public void setSprite(ImageIcon sprite) {
         this.sprite = sprite;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public String getName() {
+        return name;
     }
 }

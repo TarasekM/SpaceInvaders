@@ -22,7 +22,7 @@ public class SpaceInvadersEngine implements Runnable{
     public void run() {
         long nextGameTick = System.currentTimeMillis();
         long nextShot = System.currentTimeMillis();
-        long sleepTime, shootSleep = 500;
+        long sleepTime, shootSleep = 1000;
         boolean isShooting = false;
         UpdateView();
 
@@ -33,7 +33,7 @@ public class SpaceInvadersEngine implements Runnable{
                 view.hideCursor();
             }
 
-            if (shootSleep - model.getLevel() * 50 <= System.currentTimeMillis() - nextShot) {
+            if (shootSleep - model.getPlayer().getShootingFrequency() <= System.currentTimeMillis() - nextShot) {
                 isShooting = true;
                 nextShot = System.currentTimeMillis();
             }
@@ -62,7 +62,7 @@ public class SpaceInvadersEngine implements Runnable{
 
     private void UpdateView(){
         view.updateState(model.getPlayerLives(), model.getScore(), model.getHearth(), model.getPlayer(),
-                model.getShots(), model.getAliens(),model.getMessage());
+                model.getShots(), model.getAliens(),model.getUpgrades(), model.getMessage());
         view.repaint();
     }
 
@@ -72,6 +72,7 @@ public class SpaceInvadersEngine implements Runnable{
         if (isShooting) {
             model.addShot();
         }
+        model.upgradeCollisionDetection();
         model.shotCollisionDetection();
         model.playerAlienCollisionDetection();
         model.alienBombShots();
@@ -89,7 +90,7 @@ public class SpaceInvadersEngine implements Runnable{
     }
 
     void fixedPlayerMove(){
-        float playerSpeed = 8;
+        float playerSpeed = model.getPlayer().getPlayerSpeed();
         float xPos = (float) model.getPlayer().getX();
         float yPos = (float) model.getPlayer().getY();
         float dx = (view.mousePos.x - 24 - xPos);
@@ -117,7 +118,6 @@ public class SpaceInvadersEngine implements Runnable{
 
             }
         } catch (ArithmeticException e){
-            System.out.println(e);
             return;
         }
 
