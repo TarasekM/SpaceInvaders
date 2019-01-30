@@ -11,6 +11,12 @@ public class Player extends Sprite implements SharedVariables {
     private final int PLAYER_WIDTH = 48;
     private final int PLAYER_HEIGHT = 48;
 
+    private float playerSpeed;
+    private float shootingFrequency;
+    private float playerDamage;
+    private float shootSpeed;
+
+
     public Player(){
         initPLayer();
     }
@@ -22,12 +28,13 @@ public class Player extends Sprite implements SharedVariables {
         }catch (NullPointerException e){
             setImage(null);
         }
-
-        setX(START_X);
-        setY(START_Y);
+        resetPosition();
         width = PLAYER_WIDTH;
         height = PLAYER_HEIGHT;
-
+        playerSpeed = 3f;
+        shootingFrequency = 0;
+        playerDamage = 1;
+        shootSpeed = 2;
     }
 
     public void move(float x, float y){
@@ -58,5 +65,51 @@ public class Player extends Sprite implements SharedVariables {
 
     public double getHeight() {
         return height;
+    }
+
+
+    public float getShootingFrequency() {
+        return shootingFrequency;
+    }
+
+    public void setShootingFrequency(float shootingFrequency) {
+        this.shootingFrequency = shootingFrequency;
+    }
+
+    public float getPlayerSpeed() {
+        return playerSpeed;
+    }
+
+    public void setPlayerSpeed(float playerSpeed) {
+        this.playerSpeed = playerSpeed;
+    }
+
+    public float getPlayerDamage() {
+        return playerDamage;
+    }
+
+    public void setPlayerDamage(float playerDamage) {
+        this.playerDamage = playerDamage;
+    }
+
+    public float getShootSpeed() {
+        return shootSpeed;
+    }
+
+    public void setShootSpeed(float shootSpeed) {
+        this.shootSpeed = shootSpeed;
+    }
+
+    public void resetPosition(){
+        setX(START_X);
+        setY(START_Y);
+    }
+
+    public void resetBonus(){
+        this.playerSpeed = 3f;
+        this.shootingFrequency = 0;
+        this.playerDamage = 1;
+        this.shootSpeed = 2;
+
     }
 }
