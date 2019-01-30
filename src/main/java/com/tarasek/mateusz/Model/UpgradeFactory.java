@@ -1,14 +1,13 @@
 package com.tarasek.mateusz.Model;
 
-public class UpgradeFactory {
+class UpgradeFactory {
 
     Upgrade generateUpgrade(int choice, int x, int y){
-
         switch (choice){
             case 1:
                 return new UpgradeShotSpeed(x, y);
-
-            case 2:
+            //TODO Logic for shot counter. Excluding from random range for now
+            case 22:
                 return new UpgradeShotCounter(x, y);
 
             case 3:
