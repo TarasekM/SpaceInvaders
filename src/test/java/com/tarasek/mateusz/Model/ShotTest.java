@@ -23,7 +23,7 @@ public class ShotTest implements SharedVariables {
 
     @Test
     void moveUpwards(){
-        shot.moveUpwards();
+        shot.moveUpwards(3);
         assertEquals(50 - SHOT_SPEED + SHOT_HEIGHT_SPACE, shot.getY());
     }
 }

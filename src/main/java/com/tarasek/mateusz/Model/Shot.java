@@ -27,9 +27,9 @@ public class Shot extends Sprite implements SharedVariables {
         collider = new Ellipse2D.Float(this.x-1, this.y-1, RADIUS*2, 2*RADIUS);
     }
 
-    public void moveUpwards(){
-        setY((int)getY() - SHOT_SPEED);
-        collider.y = (int)getY() - SHOT_SPEED;
+    public void moveUpwards(float speed){
+        setY((int)getY() - speed);
+        collider.y = (int)getY() - speed;
     }
 
     public Ellipse2D.Float getCollider(){

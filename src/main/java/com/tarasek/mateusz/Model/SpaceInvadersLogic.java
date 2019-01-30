@@ -23,10 +23,12 @@ public class SpaceInvadersLogic {
     private boolean inGame;
 
     private AlienFactory alienFactory;
+    private UpgradeFactory upgradeFactory;
     private String message;
     private Player player;
     private ArrayList<Alien> aliens = new ArrayList<>();
     private ArrayList<Shot> shots = new ArrayList<>();
+    private ArrayList<Upgrade> upgrades = new ArrayList<>();
     private ImageIcon hearth;
 
 
@@ -38,6 +40,7 @@ public class SpaceInvadersLogic {
         score = 0;
         inGame = false;
         alienFactory = new AlienFactory();
+        upgradeFactory = new UpgradeFactory();
         message = "Click to start!";
         player = new Player();
         initHearth();
@@ -46,9 +49,10 @@ public class SpaceInvadersLogic {
     public void startGame(){
         if (level <= 1){
             score = 0;
+            player.resetBonus();
         }
 
-        player = new Player();
+        player.resetPosition();
         inGame = true;
         initAliens();
     }
@@ -56,9 +60,13 @@ public class SpaceInvadersLogic {
      * Fill alien array with aliens adequate to level
      * */
     private void initAliens(){
-        for (int y = 4; y >= 0; y--) {
-            for (int x = 0; x < 8; x++) {
-                Alien alien = alienFactory.generateAlien(AlienFactory.ALIEN_NAME.values()[level-1],
+        int xAxisSize = 8;
+        int yAxisSize = 4;
+        Alien alien;
+
+        for (int y = yAxisSize; y >= 0; y--) {
+            for (int x = 0; x < xAxisSize; x++) {
+                alien = alienFactory.generateAlien(AlienFactory.ALIEN_NAME.values()[level-1],
                         FIRST_ALIEN_X + 53 * x, FIRST_ALIEN_Y + 53 * y);
                 aliens.add(alien);
             }
@@ -77,6 +85,84 @@ public class SpaceInvadersLogic {
         }
     }
 
+    public void addStat(Upgrade upgrade){
+        switch (upgrade.getName()){
+            case "/PLAYER_SPEED.png":
+                float speed = player.getPlayerSpeed();
+                player.setPlayerSpeed(speed + upgrade.getValue());
+                System.out.println("PSPEED");
+                if (speed > 10){
+                    player.setPlayerSpeed(10);
+                }
+                break;
+
+
+            case "/SHOOTING_FREQUENCY.png":
+                float frequency = player.getShootingFrequency();
+                System.out.println("Frequency");
+                if(frequency >= 800){
+                    player.setShootingFrequency(800);
+                }else{
+                    player.setShootingFrequency(frequency + upgrade.getValue());
+                }
+                break;
+
+            case "/SHOT_DAMAGE.png":
+                System.out.println("PDAMAGE");
+                float damage = player.getPlayerDamage();
+                player.setPlayerDamage(damage + upgrade.getValue());
+                break;
+            case "/SHOT_SPEED.png":
+                float shotSpeed = player.getShootSpeed();
+                if(shotSpeed >= 8){
+                    player.setShootSpeed(8);
+                }else{
+                    player.setShootSpeed(shotSpeed + upgrade.getValue());
+                }
+                break;
+
+
+        }
+    }
+
+    public void upgradeCollisionDetection(){
+        Iterator<Upgrade> upgradeIterator = upgrades.iterator();
+        Upgrade upgrade;
+
+        while(upgradeIterator.hasNext()){
+            upgrade = upgradeIterator.next();
+
+            if (upgrade.isVisible()){
+                upgrade.y += upgrade.getSpeed();
+            }
+
+            if(upgrade.intersects(player)){
+                addStat(upgrade);
+                upgrade.setVisible(false);
+            }
+
+            if(!upgrade.isVisible()){
+                upgradeIterator.remove();
+            }
+        }
+    }
+
+    public void addRandomUpgradeToGame(Alien alien){
+        Random randomAlienBonusDrop = new Random();
+        Random randomWhichBonusDrop = new Random();
+        Upgrade upgrade;
+        int valueAlienBonusDrop = randomAlienBonusDrop.nextInt(40);
+        if (valueAlienBonusDrop < 40/8){
+            upgrade = upgradeFactory.generateUpgrade(
+                    randomWhichBonusDrop.nextInt(6),
+                    (int) alien.getX(),
+                    (int) alien.getY()
+            );
+            upgrade.setVisible(true);
+            upgrades.add(upgrade);
+        }
+    }
+
     /**
      * Detect collision between player missile and alien ship.
      * If collision occurs set alien ship not visible.
@@ -92,7 +178,7 @@ public class SpaceInvadersLogic {
         boolean collision;
         while (shotIterator.hasNext()) {
             Shot shot = shotIterator.next();
-            shot.moveUpwards();
+            shot.moveUpwards(player.getShootSpeed());
 
             Iterator<Alien> alienIterator = aliens.iterator();
             while (alienIterator.hasNext()) {
@@ -101,10 +187,12 @@ public class SpaceInvadersLogic {
                 collision = shot.getCollider().intersects(alien.getX(), alien.getY(), alien.width, alien.height);
 
                 if (collision && alien.isVisible() && shot.isVisible()) {
-                    alien.setHP(alien.getHP() - 1);
+
+                    alien.setHP(alien.getHP() - player.getPlayerDamage());
                     shot.setVisible(false);
                     if(alien.getHP() < 1){
                         alien.setVisible(false);
+                        addRandomUpgradeToGame(alien);
                         score += 50 + (500 * level / (aliens.size() + 1));
                         if (aliens.size() >= 2){
                             if (alien == aliens.get(0)){
@@ -181,6 +269,7 @@ public class SpaceInvadersLogic {
         inGame = false;
         shots.clear();
         aliens.clear();
+        upgrades.clear();
         playerLives = 3;
         this.message = message;
     }
@@ -195,24 +284,21 @@ public class SpaceInvadersLogic {
     public void alienBombShots(){
         Random random = new Random();
         Bomb bomb;
+        Alien alien;
         Iterator<Alien> alienIterator = aliens.iterator();
 
         while (alienIterator.hasNext()) {
-            Alien alien = alienIterator.next();
+            alien = alienIterator.next();
             bomb = alien.getBomb();
+
             int value = random.nextInt(100 * aliens.size()) + 1;
 
-            if (value > 0 && value <= 5){
+            if (value > 0 && value <= 5 && alien.isVisible()){
                 alien.getBomb().setDestroyed(false);
             }
 
             if (bomb.getY() > boardHeight){
                 bomb.setDestroyed(true);
-                alien.setBombCoordinates();
-
-                if (!alien.isVisible()){
-                    alienIterator.remove();
-                }
             }
 
             if (alien.getY() > boardHeight || alien.getX() < 0 - alien.width || alien.getX() > boardWidth){
@@ -276,6 +362,7 @@ public class SpaceInvadersLogic {
         this.inGame = inGame;
     }
 
+
     public Player getPlayer() {
         return player;
     }
@@ -286,6 +373,10 @@ public class SpaceInvadersLogic {
 
     public ArrayList<Shot> getShots() {
         return shots;
+    }
+
+    public ArrayList<Upgrade> getUpgrades() {
+        return upgrades;
     }
 
     public ImageIcon getHearth() {

@@ -26,6 +26,7 @@ public class Board extends JPanel {
     Player player;
     ArrayList<Shot> shots;
     ArrayList<Alien> aliens;
+    ArrayList<Upgrade> upgrades;
     String message;
 
     private final Color LIGHT_GREEN = new Color(48, 255, 135);
@@ -84,6 +85,7 @@ public class Board extends JPanel {
         drawPoints((Graphics2D) graphics);
         if (controller.modelIsInGame()) {
             drawPlayer(graphics);
+            drawUpgrades(graphics);
             drawAliensAndBombs(graphics);
             drawShots(graphics);
             drawHearths(graphics);
@@ -100,6 +102,17 @@ public class Board extends JPanel {
         if (!shots.isEmpty()) {
             for (Shot shot : shots) {
                 graphics.drawImage(shot.getImage(), (int) shot.getX(), (int) shot.getY(), this);
+            }
+        }
+    }
+
+    private void drawUpgrades(Graphics graphics){
+        if (!upgrades.isEmpty()) {
+            for (Upgrade upgrade : upgrades) {
+                if (upgrade.isVisible()){
+                    graphics.drawImage(upgrade.getSprite().getImage(), (int) upgrade.getX(),
+                            (int) upgrade.getY(), this);
+                }
             }
         }
     }
@@ -152,7 +165,7 @@ public class Board extends JPanel {
     }
 
     public void updateState(int playerLives, long score, ImageIcon hearth, Player player, ArrayList<Shot> shots,
-                            ArrayList<Alien> aliens, String message){
+                            ArrayList<Alien> aliens, ArrayList<Upgrade> upgrades, String message){
         this.playerLives = playerLives;
         this.score = score;
 
@@ -160,6 +173,7 @@ public class Board extends JPanel {
         this.player = player;
         this.shots = shots;
         this.aliens = aliens;
+        this.upgrades = upgrades;
         this.message = message;
     }
 
