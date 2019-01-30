@@ -12,12 +12,11 @@ public abstract class Alien extends Rectangle2D.Float {
 
     private Bomb bomb;
     private ImageIcon sprite;
-    private int HP;
+    private float HP;
     private float step;
     private float speed;
     private boolean moving;
     private boolean visible;
-    private boolean withBonus;
 
     Alien(int x, int y, int width, int height, String name) {
         super(x, y, width, height);
@@ -56,11 +55,11 @@ public abstract class Alien extends Rectangle2D.Float {
         }
     }
 
-    public int getHP() {
+    public float getHP() {
         return HP;
     }
 
-    public void setHP(int HP) {
+    public void setHP(float HP) {
         this.HP = HP;
     }
 
@@ -96,13 +95,6 @@ public abstract class Alien extends Rectangle2D.Float {
         this.visible = visible;
     }
 
-    public void setWithBonus(boolean haveBonus) {
-        this.withBonus = haveBonus;
-    }
-
-    public boolean isWithBonus() {
-        return withBonus;
-    }
 
     public void setX(float x){
         this.x = x;

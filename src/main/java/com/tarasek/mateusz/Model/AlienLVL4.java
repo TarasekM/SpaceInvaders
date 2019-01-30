@@ -13,13 +13,13 @@ class AlienLVL4 extends Alien {
 
     AlienLVL4(int x, int y){
         super(x,y,48,48,"/ALIEN_LVL4.png");
-        setHP(4);
+        setHP(6);
         setSpeed(1.6f);
     }
 
     AlienLVL4(int x, int y, int width, int height){
         super(x, y, width, height,"/ALIEN_LVL4.png");
-        setHP(4);
+        setHP(6);
         setSpeed(1.6f);
     }
 
