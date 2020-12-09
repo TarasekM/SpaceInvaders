@@ -6,3 +6,6 @@
 3. Wszystkie sprite'y zostały stworzone przeze mnie w darmowym programie tworzenia do grafiki.
 4. Docelowo projekt posłużył jako zaliczenie z przedmiotu Java na studiach.
 5. Dodatkowo w ramach nauki użyłem również narzędzie ciągłej integracji travis-ci.
+
+### Wersje do pobrania.
+Wersje gry do pobrania dodałem na osobne branche.
