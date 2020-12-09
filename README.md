@@ -8,4 +8,4 @@
 5. Dodatkowo w ramach nauki użyłem również narzędzie ciągłej integracji travis-ci.
 
 ### Wersje do pobrania.
-Wersje gry do pobrania dodałem na osobne branche.
+Wersja do pobrania jest w formacie .jar. Aby ją odtworzyć potrzebna jest Java Runtime Environment z 2018 roku lub wersji późniejszej.
